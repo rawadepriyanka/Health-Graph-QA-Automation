@@ -1,0 +1,106 @@
+Test Class for the webpage Automation
+package testClasses;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import pomClasses.HeltCare;
+
+public class TestClass {
+	
+	WebDriver driver;
+	HeltCare driver1;
+	String TCID;
+
+	@BeforeClass
+	public void browserlaunch() {
+		System.setProperty("webdriver.chrome.driver", "C:\\Priyanka Automation.install\\chromedriver.exe");
+
+		driver = new ChromeDriver();
+		driver.get("http://testfire.net/index.jsp");
+		driver.manage().window().maximize();
+		driver1 = new HeltCare(driver);
+	}
+	@BeforeMethod
+	public void applogin() {
+		driver.navigate().refresh();
+	}
+	@Test
+	public void tc01() {
+		TCID = "01";
+		driver1.clickSigninbtn();
+		driver1.EnterUserid("demo_user");
+		driver1.EnterPass("demo_password");
+		driver1.clickloginbtn();
+	}
+	@Test
+	public void tc02() {
+		TCID = "02";
+		driver1.clickSigninbtn();
+		driver1.EnterUserid("admin");
+		driver1.EnterPass("admin");
+		driver1.clickloginbtn();
+
+		String expectp = "Welcome to Altoro Mutual Online.";
+		String actualp = driver1.gettextadmin();
+		Assert.assertEquals(expectp, actualp);
+	}
+	@Test
+	public void tc03() {
+		TCID = "03";
+		driver1.clickAccSummery();
+		driver1.SelectAcc();
+		driver1.clickGobtn();
+
+		String expectp = "$100000000050214432.00";
+		String actualp = driver1.gettextBalvalidate();
+		Assert.assertEquals(expectp, actualp);
+	}
+	@Test
+	public void tc04() {
+		TCID = "04";
+		driver1.clickTrfunds();
+		driver1.selectTrtoacc();
+		driver1.enterAmttoacc("9876");
+		driver1.clickTrmoney();
+
+		String expectp = "9876.0 was successfully transferred from Account 800000 into Account 800001 at 10/14/22 4:20 AM.";
+		String actualp = driver1.gettextTRfundSucc();
+		Assert.assertEquals(expectp, actualp);
+	}
+	@Test
+	public void tc05() {
+		TCID = "05";
+		driver1.clickViewTr();
+
+		String expectp = "$9876.00";
+		String actualp = driver1.gettextFristTrvalid();
+		Assert.assertEquals(expectp, actualp);
+	}
+	@Test
+	public void tc06() {
+		TCID = "06";
+		driver1.clickContUs();
+		driver1.clickonlinebtn();
+		driver1.EnterOnlineEmail("xyz");
+		driver1.EnterOnlineSubject("sub");
+		driver1.EnterOnlineComments("thank u");
+		driver1.clickOnlineSubmit();
+	}
+	@AfterMethod
+	public void logout() {
+
+		// driver1.clickSignOff();
+	}
+	@AfterClass
+	public void closeBrowser() {
+		driver.quit();
+	}
+
+}
